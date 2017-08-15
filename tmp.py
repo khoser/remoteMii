@@ -6,11 +6,11 @@ import MySQLdb
 
 def main():
     readSQL()
-    p = subprocess.Popen("./tmp.sh done", shell=True, stdout=subprocess.PIPE)
-    out = p.stdout.read()
-    print(out)
-    result = out.split()
-    print(result)
+    #p = subprocess.Popen("./tmp.sh done", shell=True, stdout=subprocess.PIPE)
+    #out = p.stdout.read()
+    #print(out)
+    #result = out.split()
+    #print(result)
     return 0
 
 def readSQL():
@@ -20,7 +20,7 @@ def readSQL():
     cursor = db.cursor()
 
     # запрос к БД
-    sql = """SELECT * FROM actions ORDER BY `rig` Desc"""
+    sql = """SELECT action FROM actions ORDER BY `rig` Desc"""
     # выполняем запрос
     cursor.execute(sql)
 
@@ -29,9 +29,14 @@ def readSQL():
     # перебираем записи
     for rec in data:
         # извлекаем данные из записей - в том же порядке, как и в SQL-запросе
-        #rec
+        action, = rec
         # выводим информацию
-        print(rec)
+        print("Выполняю:", action)
+        p = subprocess.Popen("./tmp.sh '"+action+"'", shell=True, stdout=subprocess.PIPE)
+        out = p.stdout.read()
+        #print(out)
+        #result = out.split()
+        #print(result)
 
     # закрываем соединение с БД
     db.close()
