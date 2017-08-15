@@ -6,7 +6,7 @@ import MySQLdb
 
 def main():
     readSQL()
-    p = subprocess.Popen("./tmp.sh 'param'", shell=True, stdout=subprocess.PIPE)
+    p = subprocess.Popen("./tmp.sh done", shell=True, stdout=subprocess.PIPE)
     out = p.stdout.read()
     print(out)
     result = out.split()
@@ -15,12 +15,12 @@ def main():
 
 def readSQL():
     # соединяемся с базой данных
-    db = MySQLdb.connect(host="192.168.1.150", user="todoroot", passwd="123456", db="todoroot", charset='utf8')
+    db = MySQLdb.connect(host="192.168.1.150", user="remotemii", passwd="123456", db="remotemii", charset='utf8')
     # формируем курсор
     cursor = db.cursor()
 
     # запрос к БД
-    sql = """SELECT * FROM ToDoItems ORDER BY `Key` Desc"""
+    sql = """SELECT * FROM actions ORDER BY `rig` Desc"""
     # выполняем запрос
     cursor.execute(sql)
 
