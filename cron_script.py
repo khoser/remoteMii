@@ -3,14 +3,10 @@
 
 import subprocess
 import MySQLdb
+from socket import gethostname as hostname
 
 def main():
     readSQL()
-    #p = subprocess.Popen("./tmp.sh done", shell=True, stdout=subprocess.PIPE)
-    #out = p.stdout.read()
-    #print(out)
-    #result = out.split()
-    #print(result)
     return 0
 
 def readSQL():
@@ -20,9 +16,9 @@ def readSQL():
     cursor = db.cursor()
 
     # запрос к БД
-    sql = """SELECT action FROM actions ORDER BY `rig` Desc"""
+    sql = "SELECT action FROM actions where rig = %s order by id"
     # выполняем запрос
-    cursor.execute(sql)
+    cursor.execute(sql, (hostname(),))
 
     # получаем результат выполнения запроса
     data =  cursor.fetchall()
@@ -32,7 +28,7 @@ def readSQL():
         action, = rec
         # выводим информацию
         print("Выполняю:", action)
-        p = subprocess.Popen("./tmp.sh '"+action+"'", shell=True, stdout=subprocess.PIPE)
+        p = subprocess.Popen("./run_sh.sh '"+action+"'", shell=True, stdout=subprocess.PIPE)
         out = p.stdout.read()
         #print(out)
         #result = out.split()
